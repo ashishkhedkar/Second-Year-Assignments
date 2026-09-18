@@ -1,4 +1,5 @@
-# Write a program to track rainfall data for 3 cities over 4 months. Using a 2D array, we can store the data, calculate the average rainfall for each city, and display the rainfall data in a tabular format.
+/* Write a program to track rainfall data for 3 cities over 4 months. 
+Using a 2D array, we can store the data, calculate the average rainfall for each city, and display the rainfall data in a tabular format. */
 
 #include <iostream>
 using namespace std;
