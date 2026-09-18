@@ -1,0 +1,42 @@
+# Write a program to track rainfall data for 3 cities over 4 months. Using a 2D array, we can store the data, calculate the average rainfall for each city, and display the rainfall data in a tabular format.
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    cout <<"Rainfall Data of 3 cities across 4 months"<< endl;
+
+    int i, j;
+    float rainfall[3][4];
+    float sum = 0, avg;
+
+    cout <<"Enter the data:"<<endl;
+
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            cin>>rainfall[i][j];
+        }
+    }
+
+    cout<<"\n\t\tRainfall Data (ml)\t\t\n";
+    cout <<"Sr. No.\tCity Name\tMonth 1\tMonth 2\tMonth 3\tMonth 4\tAverage\n";
+    for (i = 0; i < 3; i++)
+    {
+		sum = 0;
+		cout<<i + 1<<"\tCity "<<i + 1<<"\t\t";
+		
+        for (j = 0; j < 4; j++)
+        {
+           cout<<rainfall[i][j]<< "\t";
+			sum += rainfall[i][j];
+            
+        }
+        avg = sum / 4;
+		cout<<avg<<endl;
+    }
+    
+    return 0;
+}
