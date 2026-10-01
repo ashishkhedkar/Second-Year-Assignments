@@ -10,7 +10,7 @@ protected:
 public:
     // Virtual destructor for proper cleanup
     virtual ~Shape() {
-        cout << "Shape Destructor" << endl;
+        cout << "\nShape Destructor" << endl;
     }
 
     // Pure Virtual Functions
@@ -22,7 +22,7 @@ public:
 class Circle : public Shape {
 public:
     void getData() override {
-        cout << "Enter radius: ";
+        cout << "\nEnter radius: ";
         cin >> val1;
     }
 
@@ -32,7 +32,7 @@ public:
     }
 
     ~Circle() override {
-        cout << "Circle Destructor" << endl;
+        cout << "\nCircle Destructor" << endl;
     }
 };
 
@@ -40,7 +40,7 @@ public:
 class Rectangle : public Shape {
 public:
     void getData() override {
-        cout << "Enter length: ";
+        cout << "\nEnter length: ";
         cin >> val1;
         cout << "Enter width: ";
         cin >> val2;
@@ -48,11 +48,11 @@ public:
 
     void calculateArea() override {
         double area = val1 * val2;
-        cout << "Area of Rectangle: " << area << endl;
+        cout << "\nArea of Rectangle: " << area << endl;
     }
 
     ~Rectangle() override {
-        cout << "Rectangle Destructor" << endl;
+        cout << "\nRectangle Destructor" << endl;
     }
 };
 
@@ -60,7 +60,7 @@ public:
 class Triangle : public Shape {
 public:
     void getData() override {
-        cout << "Enter base: ";
+        cout << "\nEnter base: ";
         cin >> val1;
         cout << "Enter height: ";
         cin >> val2;
@@ -68,11 +68,11 @@ public:
 
     void calculateArea() override {
         double area = 0.5 * val1 * val2;
-        cout << "Area of Triangle: " << area << endl;
+        cout << "\nArea of Triangle: " << area << endl;
     }
 
     ~Triangle() override {
-        cout << "Triangle Destructor" << endl;
+        cout << "\nTriangle Destructor" << endl;
     }
 };
 
