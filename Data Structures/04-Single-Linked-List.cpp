@@ -1,141 +1,142 @@
-
-
-
 #include <iostream>
 #include <string>
 using namespace std;
 
+// Node represents a single task in the linked list
 class Node {
 public:
-    int task_ID;
-    string task_name;
-    int priority;
-    int exe_time;
-    Node* next;
+    string name;       
+    int priority;      
+    int time;        
+    Node* next;        // Pointer to the next task
 
-    // Default constructor
-    Node() {
-        task_ID = 0;
-        task_name = "";
-        priority = 0;
-        exe_time = 0;
-        next = NULL;
-    }
-
-    // Parameterized constructor
-    Node(int ID, string name, int p, int time) {
-        task_ID = ID;
-        task_name = name;
+    // Constructor to initialize a task
+    Node(string n, int p, int t) {
+        name = n;
         priority = p;
-        exe_time = time;
+        time = t;
         next = NULL;
     }
 };
 
-class Tasks {
+// TaskScheduler manages all the tasks
+class TaskScheduler {
+    Node* head;        // Points to the first task
+
 public:
-    Node* head;   // Pointer to dummy header node
-    Node* temp;   // Temporary pointer for traversal
-
-    Tasks() {
-        // Create an empty dummy header node
-        head = new Node();
-        temp = NULL;
+    // Constructor
+    TaskScheduler() {
+        head = NULL;
     }
 
-    // Insert a task according to priority
-    void insertTask() {
-        int id, p, time;
-        string name;
+    // Inserts a task according to its priority
+    // Higher priority tasks are placed first
+    void insertTask(string name, int priority, int time) {
+        Node* newNode = new Node(name, priority, time);
 
-        cout << "\nEnter Task ID: ";
-        cin >> id;
-
-        cout << "Enter Task Name: ";
-        cin >> name;
-
-        cout << "Enter Priority: ";
-        cin >> p;
-
-        cout << "Enter Execution Time: ";
-        cin >> time;
-
-        // Create the new task node
-        Node* t = new Node(id, name, p, time);
-
-        // Start from the header
-        Node* prev = head;
-        Node* curr = head->next;
-
-        // Find the correct position.
-        // Higher priority tasks are placed first.
-        while (curr != NULL && curr->priority >= t->priority) {
-            prev = curr;
-            curr = curr->next;
-        }
-
-        // Insert the new node between prev and curr
-        t->next = curr;
-        prev->next = t;
-
-        cout << "\nTask added successfully!\n";
-    }
-
-    // Display all tasks
-    void displayTask() {
-        temp = head->next;
-
-        if (temp == NULL) {
-            cout << "\nNo tasks available.\n";
+        // If the list is empty or new task has higher priority,
+        // insert it at the beginning
+        if (head == NULL || priority > head->priority) {
+            newNode->next = head;
+            head = newNode;
             return;
         }
 
-        cout << "\n========== Scheduled Tasks ==========\n";
+        // Find the correct position for the new task
+        Node* temp = head;
 
+        // Move forward while the next task has equal or higher priority
+        while (temp->next != NULL &&
+               temp->next->priority >= priority) {
+            temp = temp->next;
+        }
+
+        // Insert the new task at the correct position
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+
+    // Displays all tasks in their scheduled order
+    void display() {
+        Node* temp = head;
+
+        // Check if there are no tasks
+        if (head == NULL) {
+            cout << "No tasks available.\n";
+            return;
+        }
+
+        cout << "\nTask Schedule:\n";
+
+        // Traverse the linked list and display each task
         while (temp != NULL) {
-            cout << "Task ID       : " << temp->task_ID << endl;
-            cout << "Task Name     : " << temp->task_name << endl;
-            cout << "Priority      : " << temp->priority << endl;
-            cout << "Execution Time: " << temp->exe_time << " mins" << endl;
-            cout << "-------------------------------------\n";
+            cout << "Task: " << temp->name
+                 << " | Priority: " << temp->priority
+                 << " | Time: " << temp->time << " min\n";
 
             temp = temp->next;
+        }
+    }
+
+    // Executes tasks from highest to lowest priority
+    void executeTasks() {
+        // Check if there are no tasks
+        if (head == NULL) {
+            cout << "No tasks to execute.\n";
+            return;
+        }
+
+        cout << "\nExecuting Tasks:\n";
+
+        // Execute and remove tasks one by one
+        while (head != NULL) {
+            Node* temp = head;
+
+            cout << "Executing: " << temp->name << endl;
+
+            // Move head to the next task
+            head = head->next;
+
+            // Free memory of the completed task
+            delete temp;
         }
     }
 };
 
 int main() {
-    Tasks taskObj;
-    int choice;
+    TaskScheduler scheduler;
 
-    do {
-        cout << "\n===============================\n";
-        cout << "      TASK SCHEDULER MENU      \n";
-        cout << "===============================\n";
-        cout << "1. Insert Task\n";
-        cout << "2. Display Tasks\n";
-        cout << "3. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    int n;
 
-        switch (choice) {
-        case 1:
-            taskObj.insertTask();
-            break;
+    // Get the number of tasks from the user
+    cout << "Enter number of tasks: ";
+    cin >> n;
 
-        case 2:
-            taskObj.displayTask();
-            break;
+    // Input details for each task
+    for (int i = 0; i < n; i++) {
+        string name;
+        int priority, time;
 
-        case 3:
-            cout << "\nExiting program...\n";
-            break;
+        cout << "\nEnter task name: ";
+        cin >> name;
 
-        default:
-            cout << "\nInvalid choice! Please try again.\n";
-        }
+        cout << "Enter priority: ";
+        cin >> priority;
 
-    } while (choice != 3);
+        cout << "Enter execution time: ";
+        cin >> time;
+
+        // Add the task to the scheduler
+        scheduler.insertTask(name, priority, time);
+    }
+
+    // Display tasks in priority order
+    scheduler.display();
+
+    // Execute all tasks
+    scheduler.executeTasks();
 
     return 0;
 }
+
+
