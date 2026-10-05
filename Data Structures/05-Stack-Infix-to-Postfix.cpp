@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <string>
-#define N 10
+#define N 100
 using namespace std;
 
 class stack
