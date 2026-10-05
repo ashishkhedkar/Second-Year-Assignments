@@ -3,8 +3,6 @@ They pick one card at a time and insert it into the correct position in their ha
 Write a program that demonstrates how to organize (sort) cards in a hand using insertion sort. */
 
 
-Program -
-
 #include <iostream>
 using namespace std;
 
