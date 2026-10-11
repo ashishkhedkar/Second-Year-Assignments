@@ -13,83 +13,65 @@ public:
 
     Node(int val) {
         data = val;
-        next = nullptr;
+        next = NULL;
     }
 };
 
-class LinkedList {
-public:
-    Node* head = nullptr;
-
-    // Add node at the end
-    void insert(int val) {
-        Node* newNode = new Node(val);
-        if (head == nullptr) {
-            head = newNode;
-            return;
-        }
-        Node* temp = head;
-        while (temp->next != nullptr) {
-            temp = temp->next;
-        }
-        temp->next = newNode;
+void split(Node* head, Node*& head1, Node*& head2) {
+    if (head == NULL || head->next == NULL) {
+        head1 = head;
+        head2 = NULL;
+        return;
     }
 
-    // Split list into two halves using Fast & Slow Pointers (1-Pass Optimization)
-    void split(Node*& head1, Node*& head2) {
-        if (head == nullptr) return;
-        if (head->next == nullptr) {
-            head1 = head;
-            head2 = nullptr;
-            return;
-        }
+    Node* slow = head;
+    Node* fast = head->next;
 
-        Node* slow = head;
-        Node* fast = head->next; // Starting fast 1 step ahead gives standard left-leaning split
-
-        // Advance fast by 2 steps and slow by 1 step
-        while (fast != nullptr && fast->next != nullptr) {
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-
-        head1 = head;            // First half starts at head
-        head2 = slow->next;      // Second half starts after slow pointer
-        slow->next = nullptr;    // Sever the connection
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
     }
 
-    // Helper to print any list
-    static void print(Node* node) {
-        if (node == nullptr) {
-            cout << "NULL\n";
-            return;
-        }
-        while (node != nullptr) {
-            cout << node->data << " -> ";
-            node = node->next;
-        }
-        cout << "NULL\n";
+    head1 = head;
+    head2 = slow->next;
+    slow->next = NULL;
+}
+
+void print(Node* head) {
+    while (head != NULL) {
+        cout << head->data << " -> ";
+        head = head->next;
     }
-};
+    cout << "NULL\n";
+}
 
 int main() {
-    LinkedList list;
-    int n, value;
+    Node *head = NULL, *temp = NULL;
+    Node *head1, *head2;
+    int n, x;
 
-    cout << "How many nodes? ";
+    cout << "Enter number of nodes: ";
     cin >> n;
 
     for (int i = 0; i < n; i++) {
-        cout << "Enter node " << i + 1 << ": ";
-        cin >> value;
-        list.insert(value);
+        cin >> x;
+        Node* newNode = new Node(x);
+
+        if (head == NULL)
+            head = temp = newNode;
+        else {
+            temp->next = newNode;
+            temp = newNode;
+        }
     }
 
-    Node *firstHalf = nullptr, *secondHalf = nullptr;
-    list.split(firstHalf, secondHalf);
+    split(head, head1, head2);
 
-    cout << "\nFirst Half:  "; LinkedList::print(firstHalf);
-    cout << "Second Half: "; LinkedList::print(secondHalf);
+    cout << "First half: ";
+    print(head1);
+
+    cout << "Second half: ";
+    print(head2);
 
     return 0;
 }
