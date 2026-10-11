@@ -72,7 +72,6 @@ int main() {
     s.capacity = 100;      // Set maximum capacity to 100
     s.arr = arr;           // Assign the array to the stack
 
-    // Display the menu until the user chooses to exit
     do {
         cout << "\n--- STACK OPERATIONS ---\n";
         cout << "1. Push\n";
@@ -83,7 +82,6 @@ int main() {
         cout << "Enter your choice: ";
         cin >> choice;
 
-        // Perform the operation selected by the user
         switch (choice) {
             case 1:
                 cout << "Enter value to push: ";
@@ -117,25 +115,4 @@ int main() {
 
     } while (choice != 5);
 
-    return 0;  // Indicate successful program termination
-}
-int main() {
-    Stack* stack = createStack(5);
-
-    push(stack, 10);
-    push(stack, 20);
-    push(stack, 30);
-
-    cout << "Top element is: " << peek(stack) << "\n";
-
-    cout << "Popped: " << pop(stack) << "\n";
-    cout << "Popped: " << pop(stack) << "\n";
-
-    cout << "Top element is now: " << peek(stack) << "\n";
-
-    // Clean up memory
-    delete[] stack->arr;
-    delete stack;
-
-    return 0;
-}
+    return 0;  
