@@ -1,12 +1,17 @@
- #include <iostream>
+#include <iostream>
 using namespace std;
 
 int main() {
     int n;
     int reach[10][10];
 
-    cout << "Enter number of vertices: ";
+    cout << "Enter number of vertices (max 10): ";
     cin >> n;
+
+    if (n < 1 || n > 10) {
+        cout << "Invalid number of vertices";
+        return 0;
+    }
 
     cout << "Enter adjacency matrix:\n";
     for (int i = 0; i < n; i++) {
@@ -15,7 +20,7 @@ int main() {
         }
     }
 
-    // Find transitive closure using Warshall's Algorithm
+    // Apply Warshall's Algorithm
     for (int k = 0; k < n; k++) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -25,8 +30,8 @@ int main() {
         }
     }
 
-    // Display the transitive closure matrix
-    cout << "\nTransitive Closure Matrix:\n";
+    // Display the transitive closure
+    cout << "Transitive Closure Matrix:\n";
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             cout << reach[i][j] << " ";
