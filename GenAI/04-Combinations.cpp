@@ -1,181 +1,146 @@
 #include <iostream>
-#include <string>
 
 using namespace std;
 
-// Factorial function
-long long fac(int num) {
-    long long result = 1;
-
-    for (int i = 1; i <= num; i++) {
-        result *= i;
-    }
-
-    return result;
-}
-
-// Power function
-long long power(int base, int exp) {
-    long long result = 1;
-
-    for (int i = 0; i < exp; i++) {
-        result *= base;
-    }
-
-    return result;
-}
-
-// Combination function (nCr)
-long long combination(int n, int r) {
-    if (r < 0 || r > n)
-        return 0;
-
-    return fac(n) / (fac(r) * fac(n - r));
-}
-
-// Recursive function to generate combinations
-void generate(string elements[], string data[], int n, int r, int index, int start) {
-
-    // Print the combination when r elements are selected
-    if (index == r) {
-        cout << "{ ";
-
-        for (int j = 0; j < r; j++) {
-            cout << data[j] << " ";
+// Generates all combinations recursively
+void generateCombinations(int idx, int start, int n, int r, const int arr[], int result[]) 
+{
+    if (idx == r) 
+    {
+        cout << "[ ";
+        for (int i = 0; i < r; i++) 
+        {
+            cout << result[i] << " ";
         }
-
-        cout << "}\n";
+        cout << "]\n";
         return;
     }
 
-    // Select elements one by one
-    for (int i = start; i < n; i++) {
-        data[index] = elements[i];
-
-        // Recursively select the next element
-        generate(elements, data, n, r, index + 1, i + 1);
+    for (int i = start; i < n; i++) 
+    {
+        result[idx] = arr[i];
+        generateCombinations(idx + 1, i + 1, n, r, arr, result);
     }
 }
 
-int main() {
+// Calculates factorial n!
+long long factorial(int n) 
+{
+    if (n < 0) return 0;
+    long long pro = 1;
+    for (int i = 1; i <= n; i++) 
+    {
+        pro *= i;
+    }
+    return pro;
+}
+
+// Calculates nCr (Combinations)
+long long combination(int n, int r) 
+{
+    if (r < 0 || r > n) return 0;
+    return factorial(n) / (factorial(r) * factorial(n - r));
+}
+
+int main() 
+{
     int choice;
 
-    // Display the menu
-    cout << "MENU:\n";
-    cout << "1. Generate Combinations\n";
-    cout << "2. Permutation Formulas (With/Without Repetition)\n";
-    cout << "3. Problem Solving: Committee Selection\n";
-    cout << "Enter choice: ";
-    cin >> choice;
+    // Variables declared outside switch to prevent jump errors
+    int n, r;
+    int arr[10];
+    int result[10];
+    long long c1, c2, c3, total;
 
-    // Generate combinations
-    if (choice == 1) {
-        int n, r;
+    while (true) 
+    {
+        cout << "\n--- COMBINATIONS MENU ---\n";
+        cout << "1. Print All Combinations\n";
+        cout << "2. Calculate nCr (With and Without Repetition)\n";
+        cout << "3. Select 5 Members (At least 3 Women from 7 W, 5 M)\n";
+        cout << "4. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
 
-        cout << "Enter n: ";
-        cin >> n;
+        switch (choice) 
+        {
+            case 1:
+                cout << "\nEnter n (total objects, max 10): ";
+                cin >> n;
+                cout << "Enter r (selected objects): ";
+                cin >> r;
 
-        cout << "Enter r: ";
-        cin >> r;
+                if (r > n || n > 10 || r < 0) 
+                {
+                    cout << "Invalid input!\n";
+                    break;
+                }
 
-        // Check whether r is valid
-        if (r < 0 || r > n) {
-            cout << "Invalid values of n and r!\n";
-            return 0;
+                cout << "Enter " << n << " numbers: ";
+                for (int i = 0; i < n; i++) 
+                {
+                    cin >> arr[i];
+                }
+
+                cout << "\nCombinations (" << combination(n, r) << " total):\n";
+                generateCombinations(0, 0, n, r, arr, result);
+                break;
+
+            case 2:
+                cout << "\nEnter n: ";
+                cin >> n;
+                cout << "Enter r: ";
+                cin >> r;
+
+                if (r < 0) 
+                {
+                    cout << "Invalid input!\n";
+                    break;
+                }
+
+                // Without repetition: C(n, r) = n! / (r! * (n - r)!)
+                if (r <= n) 
+                {
+                    cout << "Without repetition C(" << n << ", " << r << ") = " 
+                         << combination(n, r) << "\n";
+                } 
+                else 
+                {
+                    cout << "Without repetition C(" << n << ", " << r << ") = 0\n";
+                }
+
+                // With repetition: C'(n, r) = C(n + r - 1, r)
+                if (n > 0) 
+                {
+                    cout << "With repetition C'(" << n << ", " << r << ")    = " 
+                         << combination(n + r - 1, r) << "\n";
+                } 
+                else 
+                {
+                    cout << "With repetition C'(" << n << ", " << r << ")    = 0\n";
+                }
+                break;
+
+            case 3:
+                c1 = combination(7, 3) * combination(5, 2); // 3 Women, 2 Men
+                c2 = combination(7, 4) * combination(5, 1); // 4 Women, 1 Man
+                c3 = combination(7, 5) * combination(5, 0); // 5 Women, 0 Men
+                total = c1 + c2 + c3;
+
+                cout << "\n3 Women and 2 Men = " << c1 << "\n";
+                cout << "4 Women and 1 Man = " << c2 << "\n";
+                cout << "5 Women and 0 Men = " << c3 << "\n";
+                cout << "Total combinations = " << total << "\n";
+                break;
+
+            case 4:
+                cout << "Exiting...\n";
+                return 0;
+
+            default:
+                cout << "Invalid choice!\n";
+                break;
         }
-
-        string elements[100];
-        string data[100];
-
-        // Take elements from the user
-        cout << "Enter " << n << " elements:\n";
-
-        for (int i = 0; i < n; i++) {
-            cin >> elements[i];
-        }
-
-        // Calculate and display total combinations
-        cout << "\nTotal Count (nCr) = "
-             << combination(n, r) << "\n";
-
-        // Generate all possible combinations
-        cout << "Generated Sets:\n";
-        generate(elements, data, n, r, 0, 0);
-    }
-
-    // Display permutation formulas
-    else if (choice == 2) {
-        int n, r;
-
-        cout << "Enter n: ";
-        cin >> n;
-
-        cout << "Enter r: ";
-        cin >> r;
-
-        // Check whether r is valid
-        if (r < 0 || r > n) {
-            cout << "Invalid values of n and r!\n";
-            return 0;
-        }
-
-        // Calculate permutations with repetition
-        cout << "Permutations WITH repetition (n^r) = "
-             << power(n, r) << "\n";
-
-        // Calculate permutations without repetition
-        cout << "Permutations WITHOUT repetition (nPr) = "
-             << fac(n) / fac(n - r) << "\n";
-    }
-
-    // Solve committee selection problem
-    else if (choice == 3) {
-        int n, r;
-
-        cout << "\nCommittee Selection\n";
-
-        cout << "Enter total number of people: ";
-        cin >> n;
-
-        cout << "Enter number of people in committee: ";
-        cin >> r;
-
-        // Check whether the committee size is valid
-        if (r < 0 || r > n) {
-            cout << "Invalid values of n and r!\n";
-            return 0;
-        }
-
-        // Order does not matter when selecting a committee
-        cout << "\nNumber of possible committees = "
-             << combination(n, r) << "\n";
-
-        char display;
-
-        cout << "Do you want to display the committees? (y/n): ";
-        cin >> display;
-
-        // Display all possible committees if requested
-        if (display == 'y' || display == 'Y') {
-            string people[100];
-            string committee[100];
-
-            // Take names of the people
-            cout << "Enter names of " << n << " people:\n";
-
-            for (int i = 0; i < n; i++) {
-                cin >> people[i];
-            }
-
-            // Generate all possible committees
-            cout << "\nPossible Committees:\n";
-            generate(people, committee, n, r, 0, 0);
-        }
-    }
-
-    // Handle invalid menu choice
-    else {
-        cout << "Invalid Choice!\n";
     }
 
     return 0;
