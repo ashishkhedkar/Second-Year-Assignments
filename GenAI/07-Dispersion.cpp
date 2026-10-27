@@ -1,49 +1,105 @@
 #include <iostream>
-#include <cmath>
 using namespace std;
 
-void analyzeGroup(string groupName, double arr[], int n) {
-    // 1. Calculate Range
-    double minVal = arr[0], maxVal = arr[0];
-    for (int i = 1; i < n; i++) {
-        if (arr[i] < minVal) minVal = arr[i];
-        if (arr[i] > maxVal) maxVal = arr[i];
-    }
-    double range = maxVal - minVal;
-
-    // 2. Calculate Mean
-    double sum = 0;
-    for (int i = 0; i < n; i++) {
-        sum += arr[i];
-    }
-    double mean = sum / n;
-
-    // 3. Calculate Variance
-    double sqDiffSum = 0;
-    for (int i = 0; i < n; i++) {
-        sqDiffSum += (arr[i] - mean) * (arr[i] - mean);
-    }
-    double variance = sqDiffSum / (n - 1);
-
-    // 4. Calculate Standard Deviation
-    double stdDev = sqrt(variance);
-
-    // Output
-    cout << "--- " << groupName << " ---" << endl;
-    cout << "Mean               : " << mean << " hrs" << endl;
-    cout << "Range              : " << range << " hrs" << endl;
-    cout << "Variance          : " << variance << endl;
-    cout << "Standard Deviation : " << stdDev << " hrs" << endl << endl;
-}
-
 int main() {
-    double groupA[] = {6, 8, 7, 5, 6, 9, 7, 8};
-    double groupB[] = {10, 12, 13, 11, 10, 9, 8, 14};
+    int A[] = {6, 8, 7, 5, 6, 9, 7, 8};
+    int B[] = {10, 12, 13, 11, 10, 9, 8, 14};
 
-    cout << "--- Study Hours Dispersion Analysis ---" << endl;
-    analyzeGroup("Group A", groupA, 8);
-    analyzeGroup("Group B", groupB, 8);
+    int n = 8;
+    double sum, mean, variance, sd;
+    int min, max, range;
+
+    cout << "--- Study Hours Dispersion Analysis ---\n";
+
+    // Group A
+    sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        sum += A[i];
+    }
+
+    mean = sum / n;
+    min = max = A[0];
+    variance = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (A[i] < min) min = A[i];
+        if (A[i] > max) max = A[i];
+
+        double d = A[i] - mean;
+        variance += d * d;
+    }
+
+    range = max - min;
+    variance /= n;
+
+    // Calculate standard deviation without cmath
+    double x = variance;
+
+    if (x > 0) {
+        double y = 1;
+
+        while (x - y > 0.000001 || y - x > 0.000001) {
+            x = (x + y) / 2;
+            y = variance / x;
+        }
+
+        sd = x;
+    } else {
+        sd = 0;
+    }
+
+    cout << "\n--- Group A ---\n";
+    cout << "Mean                : " << mean << " hrs\n";
+    cout << "Range               : " << range << " hrs\n";
+    cout << "Variance            : " << variance << endl;
+    cout << "Standard Deviation  : " << sd << " hrs\n";
+
+    // Group B
+    sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        sum += B[i];
+    }
+
+    mean = sum / n;
+    min = max = B[0];
+    variance = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (B[i] < min) min = B[i];
+        if (B[i] > max) max = B[i];
+
+        double d = B[i] - mean;
+        variance += d * d;
+    }
+
+    range = max - min;
+    variance /= n;
+
+    // Calculate standard deviation without cmath
+    x = variance;
+
+    if (x > 0) {
+        double y = 1;
+
+        while (x - y > 0.000001 || y - x > 0.000001) {
+            x = (x + y) / 2;
+            y = variance / x;
+        }
+
+        sd = x;
+    } else {
+        sd = 0;
+    }
+
+    cout << "\n--- Group B ---\n";
+    cout << "Mean                : " << mean << " hrs\n";
+    cout << "Range               : " << range << " hrs\n";
+    cout << "Variance            : " << variance << endl;
+    cout << "Standard Deviation  : " << sd << " hrs\n";
 
     return 0;
 }
 
+   
